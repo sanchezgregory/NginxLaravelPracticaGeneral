@@ -3,11 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class Handler extends ExceptionHandler
 {
@@ -52,27 +48,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof ModelNotFoundException && $request->wantsJson())  {
-            return response()->json([
-                'error' => 'Resource not found'
-            ], 404);
-        }
-
-        if ($exception instanceof TokenInvalidException && $request->wantsJson()) {
-
-
-            return response()->json(['error' => 'Token is invalid'], 400);
-
-        } elseif ($exception instanceof TokenExpiredException && $request->wantsJson()) {
-
-            return response()->json(['error' => 'Token is expired'], 400);
-
-        } elseif ($exception instanceof JWTException && $request->wantsJson()) {
-
-            return response()->json(['error' => 'There is a problem with your token'], 400);
-
-        }
-
         return parent::render($request, $exception);
     }
 }
