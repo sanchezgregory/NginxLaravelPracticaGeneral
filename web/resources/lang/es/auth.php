@@ -20,6 +20,8 @@ return [
     'password' => 'Password',
     'confirmPassword' => 'Confirmar password',
     'remember' => 'Recuérdame',
-    'forgot'    => 'Olvidó su password?'
+    'forgot'    => 'Olvidó su password?',
+    'resetPassword' => 'Reiniciar Password',
+    'sendPassword' => 'Enviar password por email'
 
 ];
