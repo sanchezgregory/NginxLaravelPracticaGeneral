@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -26,6 +27,7 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+    protected $username = 'username';
 
     /**
      * Create a new controller instance.
@@ -35,5 +37,27 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    // Aqui va lo que se necesita para permitir el acceso
+    protected function credentials(Request $request)
+    {
+
+        // valida que el usuario debe estar activo
+
+        return [
+            'username' => $request->get ('username'),
+            'password' => $request->get('password'),
+            'active' => true
+        ];
+
+        // return $request->only($this->username, 'password'); // asi es por defecto!
+
+    }
+
+    //Para autenticar con username, cambiar por email si desea logear con email
+    public function username()
+    {
+        return 'username';
     }
 }
