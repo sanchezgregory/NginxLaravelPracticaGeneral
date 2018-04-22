@@ -1,13 +1,19 @@
-@extends('layouts.app')
+@extends('layouts.appLogin')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
 
-                <div class="card-body">
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-sm-8 blog-main">
+
+                <div class="blog-post">
+
+                    <h2 class="blog-post-title">@lang('auth.resetPassword')</h2>
+
+                    <p class="blog-post-meta">{{ \Carbon\Carbon::now() }}</p>
+
                     <form method="POST" action="{{ route('password.request') }}">
                         @csrf
 
@@ -57,9 +63,13 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                </div><!-- /.blog-post -->
+
+            </div><!-- /.blog-main -->
+
+
+        </div><!-- /.row -->
+
+    </div><!-- /.container -->
+
 @endsection
