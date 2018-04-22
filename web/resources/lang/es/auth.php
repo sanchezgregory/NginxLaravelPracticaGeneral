@@ -13,10 +13,13 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'login'     => 'Login',
-    'email' => 'E-mail address',
-    'password' => 'Password'
+    'failed' => 'Estas credenciales no coinciden con nuestros registros.',
+    'throttle' => 'Demasiados intentos de inicio de sesión. Vuelva a intentarlo en :seconds segundos.',
+    'login' => 'Login',
+    'email' => 'E-mail',
+    'password' => 'Password',
+    'confirmPassword' => 'Confirmar password',
+    'remember' => 'Recuérdame',
+    'forgot'    => 'Olvidó su password?'
 
 ];
