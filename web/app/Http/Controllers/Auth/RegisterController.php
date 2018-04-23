@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -51,6 +54,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
+            'username' => 'required|string|max:20',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -64,17 +68,67 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
         $user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
+            'username' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
 
         $user->role = 'user';
+        $user->registration_token = str_random(60);
         $user->save();
 
+        $url = route('confirmation', ['token'=> $user->registration_token]);
+
+        Mail::send('emails.registration', compact('user', 'url'), function($m) use ($user) {
+
+           $m->to($user->email, $user->name)->subject('Activa tu cuenta!');
+
+        });
+
         return $user;
+
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user);
+
+//        return $this->registered($request, $user)
+//            ?: redirect($this->redirectPath());
+    }
+
+    protected function registered(Request $request, $user)
+    {
+        $this->guard()->logout();
+
+        return redirect()->route('login')
+            ->with('status', 'Por favor confirma tu cuenta, se te ha enviado a tu email');
+    }
+
+    public function getConfirmation($token)
+    {
+        $user = User::where('registration_token', $token)->firstOrFail();
+        $user->registration_token = null;
+        $user->save();
+
+        return redirect('/login')
+            ->with('status', 'Ahora ya puedes iniciar sesion');
 
     }
 }

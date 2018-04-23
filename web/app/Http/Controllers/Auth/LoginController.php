@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
@@ -48,7 +49,8 @@ class LoginController extends Controller
         return [
             'username' => $request->get ('username'),
             'password' => $request->get('password'),
-            'active' => true
+            'active' => true,
+            'registration_token' => null
         ];
 
         // return $request->only($this->username, 'password'); // asi es por defecto!
@@ -60,4 +62,22 @@ class LoginController extends Controller
     {
         return 'username';
     }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->registration_token != null) {
+            auth()->logout();
+            return back()->with('status', 'Necesita confirmar su email');
+        }
+
+        return redirect()->intended($this->redirectPath());
+    }
+
 }

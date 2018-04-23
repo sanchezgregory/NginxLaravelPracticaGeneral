@@ -6,6 +6,7 @@
         <div class="row">
             <div class="col-sm-12">
                 @include('partials/errors')
+                @include('partials/status')
             </div>
         </div>
     </div>
