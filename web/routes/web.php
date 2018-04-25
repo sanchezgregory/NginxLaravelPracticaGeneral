@@ -11,9 +11,8 @@
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
 
-    Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => ['web']], function () {
 
     Route::get('/', function () {
 
@@ -39,6 +38,20 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
     Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
+    Route::middleware(['auth'])->group(function () {
 
+        Route::get('/home', function() {
+
+           return view('home');
+
+        })->name('home');
+
+        Route::group(['middleware' => 'verified'], function() {
+
+            Route::get('/novedades5p4', 'CourseController@index')->name('curses.index');
+
+        });
+
+    });
 
 });

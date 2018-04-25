@@ -4,8 +4,8 @@
 
     <div class="blog-header">
         <div class="container">
-            <h1 class="blog-title">The Bootstrap Blog</h1>
-            <p class="lead blog-description">An example blog template built with Bootstrap.</p>
+            <h3 class="blog-title">Novedades de Laravel desde 5.4 a 5.6</h3>
+            <p class="lead blog-description">Codigos de ejemplo para futura referencia.</p>
         </div>
     </div>
 
@@ -16,8 +16,8 @@
             <div class="col-sm-8 blog-main">
 
                 <div class="blog-post">
-                    <h2 class="blog-post-title">Sample blog post</h2>
-                    <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
+                    <h2 class="blog-post-title">En construccion</h2>
+                    <p class="blog-post-meta"><a href="#">Usuario: {{ auth()->user()->name }}</a>, creado el: {{ auth()->user()->created_at }}</p>
 
                     <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
                     <hr>
@@ -83,6 +83,7 @@
 
             <div class="col-sm-3 offset-sm-1 blog-sidebar">
                 <div class="sidebar-module sidebar-module-inset">
+                    <em>@include('partials.status')</em>
                     <h4>About</h4>
                     <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
                 </div>

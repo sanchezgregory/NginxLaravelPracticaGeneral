@@ -107,28 +107,19 @@ class RegisterController extends Controller
 
         $this->guard()->login($user);
 
-        return $this->registered($request, $user);
-
-//        return $this->registered($request, $user)
-//            ?: redirect($this->redirectPath());
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
     }
 
     protected function registered(Request $request, $user)
     {
-        $this->guard()->logout();
+        // Si no deseo que se logeo directamente, aplico logout inmediatamente se registre para que no continue.
+        // $this->guard()->logout();
 
-        return redirect()->route('login')
-            ->with('status', 'Por favor confirma tu cuenta, se te ha enviado a tu email');
+        // Si se desea aplicar otra accion una vez se registre
+
+//        return redirect()->route('login')
+//            ->with('status', 'Por favor confirma tu cuenta, se te ha enviado a tu email');
     }
 
-    public function getConfirmation($token)
-    {
-        $user = User::where('registration_token', $token)->firstOrFail();
-        $user->registration_token = null;
-        $user->save();
-
-        return redirect('/login')
-            ->with('status', 'Ahora ya puedes iniciar sesion');
-
-    }
 }

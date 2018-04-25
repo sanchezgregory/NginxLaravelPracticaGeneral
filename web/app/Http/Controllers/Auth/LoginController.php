@@ -37,7 +37,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest')->except(['getConfirmation','logout']);
     }
 
     // Aqui va lo que se necesita para permitir el acceso
@@ -50,7 +50,7 @@ class LoginController extends Controller
             'username' => $request->get ('username'),
             'password' => $request->get('password'),
             'active' => true,
-            'registration_token' => null
+            //'registration_token' => null  // restringe usuarios que no hayan verificado su cuenta por email
         ];
 
         // return $request->only($this->username, 'password'); // asi es por defecto!
@@ -72,12 +72,27 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
+        // *** Verifica que primero deba verificar su email
+
         if ($user->registration_token != null) {
-            auth()->logout();
-            return back()->with('status', 'Necesita confirmar su email');
+
+            // auth()->logout();
+            return redirect()->route('home')->with('status', 'Necesita confirmar su email, para tener accceso a todos los recursos');
+
         }
 
         return redirect()->intended($this->redirectPath());
+    }
+
+    public function getConfirmation($token)
+    {
+        $user = User::where('registration_token', $token)->firstOrFail();
+        $user->registration_token = null;
+        $user->save();
+
+        return redirect('/login')
+            ->with('status', 'Ahora ya puedes iniciar sesion');
+
     }
 
 }
