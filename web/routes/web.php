@@ -49,9 +49,15 @@ Route::group(['middleware' => ['web']], function () {
         Route::group(['middleware' => 'verified'], function() {
 
             Route::get('/novedades5p4', 'CourseController@index')->name('curses.index');
+            Route::get('/curses', 'CurseController@index')->name('curses.index');
+            Route::get('/curses/create', 'CurseController@create')->name('curses.create');
+            Route::post('/curses/store', 'CurseController@store')->name('curses.store');
+            Route::get('/curses/{id}/show', 'CurseController@show')->name('curses.show');
 
+            Route::get('/contents', 'ContentController@index')->name('contents.index');
+            Route::get('/contents/{curse}/create', 'ContentController@create')->name('contents.create');
+            Route::post('/contents/{curse}/store', 'ContentController@store')->name('contents.store');
+            Route::get('/contents/{content}/show', 'ContentController@show')->name('contents.show');
         });
-
     });
-
 });

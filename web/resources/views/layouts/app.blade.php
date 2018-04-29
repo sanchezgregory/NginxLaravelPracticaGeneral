@@ -16,6 +16,8 @@
 
     <!-- Custom styles for this template -->
     <link href="{{ asset('css/blog.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('css/fontawesome-all.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -27,7 +29,7 @@
             <a class="nav-link" href="{{ route('curses.index') }}">Laravel 5.4</a>
             <a class="nav-link" href="#">Press</a>
             <a class="nav-link" href="#">New hires</a>
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="{{ route('curses.index') }}">Settings</a>
             <!-- Authentication Links -->
             @guest
                 <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
@@ -71,4 +73,5 @@
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
