@@ -17,7 +17,7 @@ class CreateImagesTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('source')->default('Origen desconocido o personal');
-            $table->string('path');
+            $table->string('path')->default('contents/default.jpg');
             $table->integer('content_id')->unsigned();
             $table->timestamps();
 

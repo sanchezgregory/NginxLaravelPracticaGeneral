@@ -46,9 +46,15 @@
                             <label for="source">Origen de la imagen</label>
                             <input type="text" name="source" class="form-control" id="source">
                         </div>
+                        <div class="form-group clonedImg" id="img1">
+                            <label for="image1">Imagen</label>
+                            <input type="file" name="image1" class="form-control-file" id="image1">
+                        </div>
+
                         <div class="form-group">
-                            <label for="image">recurso de imagen</label>
-                            <input type="file" name="image" class="form-control-file" id="image">
+                            <label for="image">¿Otra imagen?</label>
+                            <button type="button" class="btn btn-primary"  id="btnAdd" > <i class="fas fa-angle-double-down"></i> </button>
+                            <button type="button" class="btn btn-danger" id="btnDel" ><i class="fas fa-angle-double-up"></i> </button>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Aceptar</button>
@@ -72,4 +78,49 @@
         </div><!-- /.row -->
 
     </div><!-- /.container -->
+@endsection
+@section('scripts')
+
+    <script>
+        $(document).ready(function() {
+            $('#btnDel').attr('disabled','disabled');
+            $('#btnAdd').click(function() {
+
+                var num = $('.clonedImg').length; // how many "duplicatable" input fields we currently have
+                console.log(num);
+                var newNum = new Number(num + 1); // the numeric ID of the new input field being added
+
+                // create the new element via clone(), and manipulate it's ID using newNum value
+                var newElem = $('#img' + num).clone().attr('id', 'img' + newNum);
+
+                // manipulate the name/id values of the input inside the new element
+                newElem.children(':last').attr('id', 'image' + newNum).attr('name', 'image' + newNum);
+
+                // insert the new element after the last "duplicatable" input field
+                $('#img' + num).after(newElem);
+
+                // enable the "remove" button
+                $('#btnDel').attr('disabled',false);
+
+                // business rule: you can only add 10 names
+                if (newNum == 4)
+                    $('#btnAdd').attr('disabled','disabled');
+            });
+
+            $('#btnDel').click(function() {
+                var num = $('.clonedImg').length; // how many "duplicatable" input fields we currently have
+                $('#img' + num).remove(); // remove the last element
+
+                // enable the "add" button
+                $('#btnAdd').attr('disabled',false);
+
+                // if only one element remains, disable the "remove" button
+                if (num-1 == 1)
+                    $('#btnDel').attr('disabled','disabled');
+            });
+
+        });
+
+    </script>
+
 @endsection

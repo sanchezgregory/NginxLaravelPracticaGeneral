@@ -17,4 +17,21 @@ class Content extends Model
     {
         return $this->hasMany(Image::class);
     }
+
+    public function isLast($id)
+    {
+        $content = Content::findOrFail($id);
+        $last = Content::get()->last();
+
+        if ($content->id == $last->id) {
+            return true;
+        }
+        return false;
+    }
+
+    public function hasImage(Content $content)
+    {
+        if (count($content->images) > 0) return true;
+        return false;
+    }
 }

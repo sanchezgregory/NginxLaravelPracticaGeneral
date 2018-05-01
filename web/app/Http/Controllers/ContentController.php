@@ -40,19 +40,11 @@ class ContentController extends Controller
             'curse_id' => $curse->id,
         ]);
 
-        if ($request->hasFile('image')) {
+        // if ($request->hasFile('image')) { // para una sola imagen
+        if (count($request->files) > 0) {    // para mas de una imagen
 
-            $ext = $request->image->getClientOriginalExtension();
-            $imgName = $curse->id . "-" . count($curse->contents) . "." . $ext;
-
-            $request->file('image')->storeAs('contents', $imgName,'public');
-
-            Image::create([
-                'content_id' => $content->id,
-                'source' => $request->source?$request->source:"",
-                'title' => $request->imageTitle,
-                'path' => 'contents/'.$imgName,
-            ]);
+            $image = new Image();
+            $image->storeImage($request, $content);
 
         }
 
@@ -63,5 +55,6 @@ class ContentController extends Controller
     public function show(Content $content)
     {
 
+        return view('contents.show', compact('content'));
     }
 }

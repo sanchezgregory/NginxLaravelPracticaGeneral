@@ -47,7 +47,8 @@
                                 @foreach($curse->contents as $content)
 
                                     <tr>
-                                        <td><i class="fas fa-paperclip"></i> {{ $content->title }}</td> <td align="center"><i class="fas fa-file-alt fa-xs"></i>|<i class="fas fa-pencil-alt fa-xs"></i></td>
+                                        <td><i class="fas fa-paperclip"></i> {{ $content->title }}</td> <td align="center"><a
+                                                    href="{{ route('contents.show', $content) }}"><i class="fas fa-file-alt fa-xs"></i></a>|<i class="fas fa-pencil-alt fa-xs"></i></td>
                                     </tr>
 
                                 @endforeach

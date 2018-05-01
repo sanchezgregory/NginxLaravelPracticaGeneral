@@ -12,6 +12,8 @@
 */
 
 
+use Illuminate\Support\Facades\DB;
+
 Route::group(['middleware' => ['web']], function () {
 
     Route::get('/', function () {
@@ -42,7 +44,17 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('/home', function() {
 
-           return view('home');
+            $updates = \App\Curse::orderBy('updated_at', 'desc')->take(5)->get();
+
+            $contents = DB::table('curses')
+                ->join('contents', 'curses.id', '=', 'contents.curse_id')
+                ->select(DB::raw('count(curses.id) as cont, curses.title, curses.id'))
+                ->groupBy('curses.id')
+                ->orderBy('cont','desc')
+                ->take(5)
+                ->get();
+
+           return view('home', compact('updates', 'contents'));
 
         })->name('home');
 
@@ -58,6 +70,8 @@ Route::group(['middleware' => ['web']], function () {
             Route::get('/contents/{curse}/create', 'ContentController@create')->name('contents.create');
             Route::post('/contents/{curse}/store', 'ContentController@store')->name('contents.store');
             Route::get('/contents/{content}/show', 'ContentController@show')->name('contents.show');
+
+            Route::post('/images/{content}/store', 'ImageController@store')->name('images.store');
         });
     });
 });
