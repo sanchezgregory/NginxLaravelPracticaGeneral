@@ -6,6 +6,7 @@ use App\Content;
 use App\Curse;
 use App\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ContentController extends Controller
 {
@@ -54,7 +55,39 @@ class ContentController extends Controller
 
     public function show(Content $content)
     {
-
         return view('contents.show', compact('content'));
+    }
+
+    public function edit(Content $content)
+    {
+        return view('contents.edit', compact('content'));
+    }
+
+    public function update(Request $request, Content $content)
+    {
+        $request->validate([
+            'title' => 'required|min:5|max:50|string',
+            'body' => 'required|min:5'
+        ]);
+
+        $content->title = $request->title;
+        $content->body = $request->body;
+        $content->save();
+
+        return redirect()->route('contents.show', $content->id)->with('status', 'Contenido editado satisfactoriamente');
+    }
+
+    public function storeComment(Request $request, Content $content)
+    {
+        $request->validate([
+            'body' => 'required',
+        ]);
+
+        $content->comments()->create([
+            'body' => $request->body,
+            'user_id' => auth()->user()->id
+        ]);
+
+        return redirect()->route('contents.show', $content->id)->with('status', 'Comentario creado satisfactoriamente');
     }
 }

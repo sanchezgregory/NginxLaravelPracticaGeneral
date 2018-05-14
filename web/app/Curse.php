@@ -13,6 +13,16 @@ class Curse extends Model
         return $this->hasMany(Content::class);
     }
 
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
     public function deleteImageCurseIfExist($name)
     {
         $exts = [
@@ -42,4 +52,5 @@ class Curse extends Model
         if($curse->id == $last->id) return true;
         return false;
     }
+
 }

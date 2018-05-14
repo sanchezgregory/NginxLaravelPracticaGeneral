@@ -35,16 +35,11 @@
                         <div class="form-group">
                             <label for="body">Contenido</label>
                             <textarea name="body" id="body" cols="84" rows="6">{{ old('body') }}</textarea>
-
                         </div>
                         <hr>
-                        <div class="form-group">
-                            <label for="imageTitle">Titulo de la imagen</label>
-                            <input type="text" name="imageTitle" class="form-control" id="imageTitle">
-                        </div>
-                        <div class="form-group">
-                            <label for="source">Origen de la imagen</label>
-                            <input type="text" name="source" class="form-control" id="source">
+                        <div class="form-group clonedDesc" id="desc1">
+                            <label for="imageTitle">Descripcion</label>
+                            <input type="text" name="descripcion1" class="form-control" id="descripcion1">
                         </div>
                         <div class="form-group clonedImg" id="img1">
                             <label for="image1">Imagen</label>
@@ -87,17 +82,22 @@
             $('#btnAdd').click(function() {
 
                 var num = $('.clonedImg').length; // how many "duplicatable" input fields we currently have
-                console.log(num);
+                var num2 = $('.clonedDesc').length; // how many "duplicatable" input fields we currently have
+
                 var newNum = new Number(num + 1); // the numeric ID of the new input field being added
+                var newNum2 = new Number(num2 + 1); // the numeric ID of the new input field being added
 
                 // create the new element via clone(), and manipulate it's ID using newNum value
                 var newElem = $('#img' + num).clone().attr('id', 'img' + newNum);
+                var newElem2 = $('#desc' + num).clone().attr('id', 'desc' + newNum2);
 
                 // manipulate the name/id values of the input inside the new element
                 newElem.children(':last').attr('id', 'image' + newNum).attr('name', 'image' + newNum);
+                newElem2.children(':last').attr('id', 'descripcion' + newNum2).attr('name', 'descripcion' + newNum2);
 
                 // insert the new element after the last "duplicatable" input field
                 $('#img' + num).after(newElem);
+                $('#desc' + num2).after(newElem2);
 
                 // enable the "remove" button
                 $('#btnDel').attr('disabled',false);
@@ -109,7 +109,9 @@
 
             $('#btnDel').click(function() {
                 var num = $('.clonedImg').length; // how many "duplicatable" input fields we currently have
+                var num2 = $('.clonedDesc').length; // how many "duplicatable" input fields we currently have
                 $('#img' + num).remove(); // remove the last element
+                $('#desc' + num2).remove(); // remove the last element
 
                 // enable the "add" button
                 $('#btnAdd').attr('disabled',false);

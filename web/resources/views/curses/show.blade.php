@@ -28,7 +28,9 @@
 
                                 <p class="blog-post-meta">{{ $curse->premium? "Curso premium": "Curso normal"}}</p>
 
-                                <img src="{{ asset('storage/'.$curse->image) }}" alt="">
+                                <a class="test-popup-link" href="{{ asset('storage/'.$curse->image) }}">
+                                    <img src="{{ asset('storage/'.$curse->image) }}" class="img-fluid rounded img-thumbnail" alt="" width="120" height="90">
+                                </a>
 
                             </div>
 
@@ -55,6 +57,8 @@
                                 </tbody>
                             </table>
 
+                            @include('partials.comments')
+
                         </div>
                     </div>
 
@@ -71,10 +75,22 @@
             <div class="col-sm-3 offset-sm-1 blog-sidebar">
                 <div class="sidebar-module sidebar-module-inset">
                     <p><i class="fas fa-list-alt"></i> <em><a href="{{ route('contents.create', $curse) }}"> Agregar contenido </a></em></p>
+                    <p><i class="fas fa-list-alt"></i> <em><a href="{{ route('curses.edit', $curse) }}"> Editar curso </a></em></p>
                 </div>
             </div><!-- /.blog-sidebar -->
 
         </div><!-- /.row -->
 
     </div><!-- /.container -->
+
+@endsection
+
+@section('scripts')
+
+    <script>
+        $(document).ready(function() {
+            $('.test-popup-link').magnificPopup({type:'image'});
+        });
+    </script>
+
 @endsection

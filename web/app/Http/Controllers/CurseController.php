@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Curse;
+use App\Image;
 use Illuminate\Http\Request;
 
 class CurseController extends Controller
@@ -24,7 +25,7 @@ class CurseController extends Controller
 
     public function Create()
     {
-        return view('contents.create');
+        return view('curses.create');
     }
 
     public function store(Request $request)
@@ -60,7 +61,7 @@ class CurseController extends Controller
 
         }
 
-        return redirect()->route('contents.index', compact($curse))->with('status', 'Curso '. $curse->title.', creado satisfactoriamente');
+        return redirect()->route('curses.index')->with('status', 'Curso '. $curse->title.', creado satisfactoriamente');
 
     }
 
@@ -68,5 +69,75 @@ class CurseController extends Controller
     {
         $curse = Curse::with('contents')->findOrFail($id);
         return view('curses.show', compact('curse'));
+    }
+
+    public function edit(Curse $curse)
+    {
+        return view('curses.edit', compact('curse'));
+    }
+
+    public function update(Request $request, Curse $curse)
+    {
+        if ($request->hasFile('image1')) {
+
+            if ($curse->image == 'curses/default.jpg') {
+
+                $ext = $request->file('image1')->getClientOriginalExtension();
+                $imgName = $curse->id . "." . $ext;
+                $curse->image = 'curses/' . $imgName;
+                $curse->save();
+
+                $request->file('image1')->storeAs('curses', $imgName, 'public');
+
+            } else {
+
+                $img = new Image();
+                $img->deleteImageIfExist($curse->id, 'curses/');
+
+                $ext = $request->file('image1')->getClientOriginalExtension();
+                $imgName = $curse->id . "." . $ext;
+                
+                $curse->image = 'curses/' . $imgName;
+                $curse->save();
+
+                $request->file('image1')->storeAs('curses', $imgName, 'public');
+
+            }
+
+
+        } else {
+
+            $request->validate([
+                'title' => 'required|min:5',
+                'premium' => 'boolean',
+            ]);
+
+            $curse->title = $request->title;
+            $curse->premium = $request->premium;
+            $curse->save();
+        }
+
+        return redirect()->route('curses.show', $curse)->with('status', 'Curso editado correctamente');
+
+    }
+
+    public function delete(Curse $curse)
+    {
+
+    }
+
+    public function storeComment(Request $request, Curse $curse)
+    {
+        $request->validate([
+            'body' => 'required|string|min:5',
+        ]);
+
+        $curse->comments()->create([
+            'body' => $request->body,
+            'user_id' => auth()->user()->id
+        ]);
+
+        return redirect()->route('curses.show', $curse->id);
+
     }
 }

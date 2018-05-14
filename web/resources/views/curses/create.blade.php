@@ -20,9 +20,7 @@
 
                     <p class="blog-post-meta">{{ \Carbon\Carbon::now()->format('l jS \\of F Y h:i:s A') }}</p>
 
-                    @include('partials.errors')
-
-                    <form action="{{ route('contents.store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('curses.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="title">Titulo del curso</label>
@@ -57,8 +55,8 @@
 
             <div class="col-sm-3 offset-sm-1 blog-sidebar">
                 <div class="sidebar-module sidebar-module-inset">
-                    <h4>Acciones</h4>
-                    <p><em>Crear cursos</em></p>
+
+                    @include('partials.errors')
                 </div>
             </div><!-- /.blog-sidebar -->
 
