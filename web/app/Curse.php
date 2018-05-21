@@ -53,4 +53,12 @@ class Curse extends Model
         return false;
     }
 
+    public function saveTags($tags)
+    {
+
+        $tags = Tag::whereIn('id', $tags)->orWhereIn('title', $tags)->get();
+
+        $this->tags()->sync($tags);
+    }
+
 }

@@ -53,6 +53,20 @@
                                         </p>
 
                                     </div>
+                                    <hr>
+                                    <div class="a">Tags del curso:
+                                        <select class="js-example-basic-single form-control" name="tags[]" multiple="multiple">
+                                            @foreach($tags as $tag)
+                                                @foreach($curse->tags as $curseTag)
+                                                    @if($tag->id == $curseTag->id)
+                                                        <option value="{{ $tag->id }}" selected>{{ $tag->title }}</option>
+                                                    @else
+                                                        <option value="{{ $tag->id }}">{{ $tag->title }}</option>
+                                                    @endif
+                                                @endforeach
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -110,4 +124,26 @@
             </div>
         </div>
 
+@endsection
+
+@section('scripts')
+    <script type="text/javascript" class="js-code-placeholder">
+        $('.js-example-basic-single').select2({
+            tags: true,
+            tokenSeparators: [','],
+            createTag: function (params) {
+                var term = $.trim(params.term);
+
+                if (term === '') {
+                    return null;
+                }
+
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true // add additional parameters
+                }
+            }
+        });
+    </script>
 @endsection

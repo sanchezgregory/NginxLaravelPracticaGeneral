@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Curse;
 use App\Image;
+use App\Tag;
 use Illuminate\Http\Request;
 
 class CurseController extends Controller
 {
     public function index()
     {
-        $curses = Curse::with('contents')->get();
+        $curses = Curse::with('contents', 'tags')->get();
 
         $premiums = $curses->filter(function($curses) {
             return  $curses->premium;
@@ -67,13 +68,15 @@ class CurseController extends Controller
 
     public function show($id)
     {
-        $curse = Curse::with('contents')->findOrFail($id);
+        $curse = Curse::with('contents', 'tags')->findOrFail($id);
+
         return view('curses.show', compact('curse'));
     }
 
     public function edit(Curse $curse)
     {
-        return view('curses.edit', compact('curse'));
+        $tags = Tag::all();
+        return view('curses.edit', compact('curse', 'tags'));
     }
 
     public function update(Request $request, Curse $curse)
@@ -112,9 +115,16 @@ class CurseController extends Controller
                 'premium' => 'boolean',
             ]);
 
+            $tags = $request->get('tags');
+
+            Tag::addNewTags($tags);
+
             $curse->title = $request->title;
             $curse->premium = $request->premium;
             $curse->save();
+
+            $curse->saveTags($tags);
+
         }
 
         return redirect()->route('curses.show', $curse)->with('status', 'Curso editado correctamente');

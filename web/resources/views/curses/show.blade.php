@@ -31,7 +31,15 @@
                                 <a class="test-popup-link" href="{{ asset('storage/'.$curse->image) }}">
                                     <img src="{{ asset('storage/'.$curse->image) }}" class="img-fluid rounded img-thumbnail" alt="" width="120" height="90">
                                 </a>
+                                <hr>
+                                Tags
+                                <ul>
+                                    @foreach($curse->tags as $tag)
 
+                                        <li>{{ $tag->title }}</li>
+
+                                    @endforeach
+                                </ul>
                             </div>
 
                         </div>
