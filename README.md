@@ -1,7 +1,28 @@
 # Nginx PHP MySQL [![Build Status](https://travis-ci.org/nanoninja/docker-nginx-php-mysql.svg?branch=master)](https://travis-ci.org/nanoninja/docker-nginx-php-mysql) [![GitHub version](https://badge.fury.io/gh/nanoninja%2Fdocker-nginx-php-mysql.svg)](https://badge.fury.io/gh/nanoninja%2Fdocker-nginx-php-mysql)
 
 Docker running Nginx, PHP-FPM, Composer, MySQL and PHPMyAdmin.
+===================================================
+LARAVEL NECESITA PHP7.1 O SUPERIOR
 
+$ sudo add-apt-repository ppa:ondrej/php
+$ sudo apt-get update
+
+$ service apache2 stop
+$ sudo apt-get install php7.2 php7.2-common
+$ sudo apt-get install php7.2-curl php7.2-xml php7.2-zip php7.2-gd php7.2-mysql php7.2-mbstring
+$ php -v
+   => debe verse asi: PHP 7.2.9-1+ubuntu16.04.1+deb.sury.org+1 (cli) (built: Aug 19 2018 07:16:12) ( NTS )
+
+deschacerce de version anterior de php
+$ sudo apt-get purge php7.0 php7.0-common
+
+Reiniciamos el server
+$ sudo shutdown -r now
+
+Activamos php7.2 y reiniciamos el servicio
+$ sudo a2enmod php7.2
+$ service apache2 restart
+====================================================
 
 # For laravel:
 	Previo a docker-compo up --build 
